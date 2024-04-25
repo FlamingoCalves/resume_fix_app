@@ -26,7 +26,7 @@ cd resume-fixer-app
 pip install -r requirements.txt
 ```
 3. Obtaining an OpenAI API Key:
-- Visit OpenAI API and sign up or log in.
+- Visit [OpenAI API](https://platform.openai.com/api-keys) and sign up or log in.
 - Navigate to API keys section and create a new API key.
 - Copy and paste the generated API key into your config.py file.
 
@@ -35,7 +35,7 @@ pip install -r requirements.txt
 - Replace "enter_openai_api_key_here" with your actual OpenAI API key in config.py.
 
 ## Costs Warning
-**Important:** Running this application will incur costs associated with the OpenAI API usage. Make sure to review the pricing details on OpenAI's website to understand the charges and manage your usage accordingly.
+**Important:** Running this application will incur costs associated with the OpenAI API usage. Make sure to review the [pricing detail](https://openai.com/pricing) on OpenAI's website to understand the charges and manage your usage accordingly.
 
 ## Running the Application:
 - For GUI version: python resume_fixer_app.py
