@@ -4,10 +4,24 @@ import docx
 
 class ResumeProcessor:
     def __init__(self, openai_client):
+        """
+        Initializes the ResumeProcessor with an OpenAI client.
+        Args:
+            openai_client: An instance of the OpenAI API client to be used for API calls.
+        """
         self.client = openai_client
         self.conversation_log = []
 
     def process_job_description(self, job_description, verbose=True):
+        """
+        Extracts keywords from a given job description using the OpenAI API.
+        Args:
+            job_description: A string containing the job description from which to extract keywords.
+            verbose: A boolean that determines if the function should return a verbose response.
+        Returns:
+            A list of extracted keywords.
+        """
+
         current_time = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
         self.log_interaction(f"({current_time}) Processing Job Description...\n")
         self.job_description = job_description
@@ -30,6 +44,14 @@ class ResumeProcessor:
         return self.keywords
     
     def load_resume_sections(self, resume_file_path):
+        """
+        Loads and parses specific sections (Key Skills, Work Experience) from a given resume file.
+        Args:
+            resume_file_path: A string path to the resume file to be processed.
+        Returns:
+            Two strings containing formatted Key Skills and Work Experience sections.
+        """
+
         doc = docx.Document(resume_file_path)
         key_skills_text = ''
         work_experience_text = ''
@@ -65,6 +87,15 @@ class ResumeProcessor:
     
 
     def process_resume(self, resume_file_path, keywords=None):
+        """
+        Processes the resume to match against provided keywords or previously extracted keywords.
+        Args:
+            resume_file_path: A string path to the resume file.
+            keywords: Optional; a list of keywords to match against the resume content.
+        Returns:
+            A processed resume with emphasis on matched skills and experiences.
+        """
+
         if keywords is None:
             keywords = self.keywords
 
@@ -99,6 +130,16 @@ class ResumeProcessor:
 
 
     def review_resume(self, job_description=None, processed_resume=None, model_='gpt-4-turbo-2024-04-09'):
+        """
+        Reviews the processed resume against the job description to provide a match score and feedback.
+        Args:
+            job_description: Optional; a string of the job description to compare against.
+            processed_resume: Optional; the processed resume text.
+            model_: The model identifier to use for the OpenAI API call.
+        Returns:
+            A detailed review of how well the resume matches the job description.
+        """
+
         if job_description is None:
             job_description = self.job_description
         if processed_resume is None:
@@ -124,12 +165,21 @@ class ResumeProcessor:
 
         return self.review_response
     
-    def submit_new_experiences(self, new_experiences):
-        self.new_experiences = new_experiences
-        return self.new_experiences
-    
 
     def save_special_log_for_gpt(self, job_description=None, processed_resume=None, review_response=None, new_experiences=None):
+        """
+        Saves a detailed log specifically formatted for use with GPT models.
+        Args:
+            job_description: Optional; a string of the job description.
+            processed_resume: Optional; the processed resume content.
+            review_response: Optional; the review feedback from the resume review.
+            new_experiences: Optional; newly added experiences by the user.
+        Returns:
+            A formatted string containing all the information.
+        """
+
+        self.new_experiences = new_experiences
+
         if job_description is None:
             job_description = self.job_description
         if processed_resume is None:
@@ -159,6 +209,19 @@ class ResumeProcessor:
 
     
     def fix_resume(self, job_description=None, processed_resume=None, new_experiences=None, model_='gpt-4-turbo-2024-04-09'):
+        """
+        Integrates new experiences into the processed resume based on user input and API feedback.
+        Args:
+            job_description: Optional; the job description to align the resume with.
+            processed_resume: Optional; the previously processed resume text.
+            new_experiences: Optional; new experiences to integrate.
+            model_: The model identifier to use for processing.
+        Returns:
+            The updated resume with new experiences integrated.
+        """
+
+        self.new_experiences = new_experiences
+        
         if job_description is None:
             job_description = self.job_description
         if processed_resume is None:
@@ -189,14 +252,15 @@ class ResumeProcessor:
 
 
     def log_interaction(self, text):
+        """
+        Logs interactions and steps taken during the processing of the resume.
+        Args:
+            text: A string of text to log.
+        """
         self.conversation_log.append(text)
 
     def print_log(self):
+        """
+        Prints the entire conversation log.
+        """
         print("\n".join(self.conversation_log))
-
-
-
-
-
-
-
